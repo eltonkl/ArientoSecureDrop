@@ -3,3 +3,7 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  form(action="/sendEmail" method="post")
+    | To:
+    input(type="text" name="to" style={margin: '0px 5px'})
+    input(type="submit" value="Send Email")

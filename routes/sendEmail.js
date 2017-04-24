@@ -12,7 +12,6 @@ var ses = new aws.SES({apiVersion: '2010-12-01'});
 /* POST send mail */
 router.post('/', function(req, res, next) {
   var to = req.body.to;
-  
 
   if (!to) {
     var response = { 'result': 'failure', 'reason': 'No email given.'};
