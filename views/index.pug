@@ -3,7 +3,15 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  form(action="/sendEmail" method="post")
+  form(id='file-uploader' action="/fileUpload" class='dropzone dz-clickable' enctype='multipart/form-data' method="post")
+    div(class ='fallback')
+      input(name='file' type='file')
+
+  form(action="/sendEmail" method='post')
+    | From:
+    input(type="text" name="from" style={margin: '0px 5px'})
+    br
     | To:
     input(type="text" name="to" style={margin: '0px 5px'})
+    br
     input(type="submit" value="Send Email")
