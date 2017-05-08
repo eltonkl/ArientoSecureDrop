@@ -18,24 +18,26 @@ var nodemailer = require('nodemailer');
 /* POST send mail */
 router.post('/', function(req, res, next) {
   var to = req.body.to;
-  var transporter = nodemailer.createTransport('SMTP', {
-    service: 'gmail',
+  var transporter = nodemailer.createTransport({
+    service: 'Gmail',
     auth: {
-      user: 'arientosecuredrop@gmail.com',
-      pass: 'dylanhoang'
+      user: 'ariento.test.cs130@gmail.com',
+      pass: 'ariento_cs130'
     }
   });
 
   var mailOptions = {
-    from: 'Sender: <arientosecuredrop@gmail.com>',
-    to: 'Receiver: <arientosecure@gmail.com>',
+    from: 'Sender: <ariento.test.cs130@gmail.com>',
+    to: 'Receiver: <matthewallenlin@gmail.com>',
     subject: 'Hello ', 
-   // text: 'Hello',
-   // attachments: [
-    //  {
-     //   path: '/public/uploads/a.txt'
-      //}
-   // ]
+    text: 'Hello',
+    attachments: [
+       {
+         filename: 'image.png',
+         path: 'http://www.clipartbest.com/cliparts/acq/ddo/acqddoGcM.png',
+         cid: 'image.png'
+        }
+     ]
   }
 
   transporter.sendMail(mailOptions, function(error, response) {

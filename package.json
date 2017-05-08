@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "app-root-path": "^2.0.1",
     "aws-sdk": "2.45.0",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
@@ -17,6 +18,7 @@
     "nodemailer": "^4.0.1",
     "pg-promise": "~5.6.7",
     "pug": "~2.0.0-beta11",
-    "serve-favicon": "~2.4.2"
+    "serve-favicon": "~2.4.2",
+    "xoauth2": "^1.2.0"
   }
 }
