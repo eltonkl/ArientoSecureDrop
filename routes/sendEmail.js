@@ -16,7 +16,7 @@ var router = express.Router();
 var nodemailer = require('nodemailer');
 var fs = require('fs');
 var path = require('path');
-var upload = "/home/arko617/ArientoSecureDrop/public/uploads";
+var upload = "/Users/Darthpwner/Desktop/CS Resources/CS Classes/CS-130/ArientoSecureDrop/public/uploads";
 
 var attachFiles = [];
 
