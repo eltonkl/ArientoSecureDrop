@@ -14,6 +14,26 @@ var router = express.Router();
 //var client = ses.createClient({ key: "AKIAI3AKLHSWB2KGQVPQ", secret:"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" });
 
 var nodemailer = require('nodemailer');
+var fs = require('fs');
+var path = require('path');
+var upload = "/home/arko617/ArientoSecureDrop/public/uploads";
+
+
+var attachFiles = [];
+
+fs.readdir(upload, function(err, files){
+  if(err)
+    console.log("err");
+      
+  files.forEach(function(file, index){ 
+    var fileObject =  {
+      filename: file,
+      path: upload + "/" + file,
+      cid: file
+    }
+    attachFiles.push(fileObject);
+  });
+});
 
 /* POST send mail */
 router.post('/', function(req, res, next) {
@@ -25,23 +45,18 @@ router.post('/', function(req, res, next) {
       pass: 'ariento_cs130'
     }
   });
-
+  
   var mailOptions = {
     from: 'Sender: <ariento.test.cs130@gmail.com>',
-    to: 'Receiver: <matthewallenlin@gmail.com>',
+    to: 'Receiver: <arkox617@gmail.com>',
+    // to: 'Receiver: <>',
     subject: 'Hello ', 
     text: 'Hello',
-    attachments: [
-       {
-         filename: 'image.png',
-         path: 'http://www.clipartbest.com/cliparts/acq/ddo/acqddoGcM.png',
-         cid: 'image.png'
-        }
-     ]
+    attachments: attachFiles
   }
 
   transporter.sendMail(mailOptions, function(error, response) {
-      console.log("message sent:");
+      console.log("message sent: ", response);
    })
 });
 
