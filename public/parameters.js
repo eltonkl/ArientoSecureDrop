@@ -4,8 +4,8 @@
 //For now can only support upload of 3 files
 Dropzone.options.fileUploader = {
   paramName: 'file',
-  maxFilesize: 10, // MB
-  maxFiles: 3,
+  maxFilesize: 100, // MB
+  maxFiles: 10,
   dictDefaultMessage: 'Drag an image here to upload, or click to select one',
   headers: {
     'x-csrf-token': document.querySelectorAll('meta[name=csrf-token]')[0].getAttributeNode('content').value,

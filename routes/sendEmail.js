@@ -18,7 +18,6 @@ var fs = require('fs');
 var path = require('path');
 var upload = "/home/arko617/ArientoSecureDrop/public/uploads";
 
-
 var attachFiles = [];
 
 fs.readdir(upload, function(err, files){
@@ -37,7 +36,7 @@ fs.readdir(upload, function(err, files){
 
 /* POST send mail */
 router.post('/', function(req, res, next) {
-  var to = req.body.to;
+  var sendTo = req.body.to;
   var transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -48,7 +47,7 @@ router.post('/', function(req, res, next) {
   
   var mailOptions = {
     from: 'Sender: <ariento.test.cs130@gmail.com>',
-    to: 'Receiver: <arkox617@gmail.com>',
+    to: 'Receiver: <' + sendTo + '>',
     // to: 'Receiver: <>',
     subject: 'Hello ', 
     text: 'Hello',
