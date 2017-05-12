@@ -3,7 +3,7 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  form(id='file-uploader' action="/fileUpload" class='dropzone dz-clickable' enctype='multipart/form-data' method="post")
+  form(style='background-color: #FFD700;' id='file-uploader' action="/fileUpload" class='dropzone dz-clickable' enctype='multipart/form-data' method="post")
     div(class ='fallback')
       input(name='file' type='file')
 
