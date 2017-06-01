@@ -17,8 +17,8 @@ var nodemailer = require('nodemailer');
 var fs = require('fs');
 var path = require('path');
 var upload = path.resolve(__dirname) + "/../public/uploads";
-// var upload = "/home/arko617/ArientoSecureDrop/public/uploads";
 var attachFiles = [];
+var smime = require('smime');
 
 fs.readdir(upload, function(err, files){
   if(err)
@@ -37,6 +37,7 @@ fs.readdir(upload, function(err, files){
 /* POST send mail */
 router.post('/', function(req, res, next) {
   var sendTo = req.body.to;
+
   var transporter = nodemailer.createTransport({ 
     host: 'smtp.office365.com',
     port: '587',
@@ -45,12 +46,19 @@ router.post('/', function(req, res, next) {
     tls: { ciphers: 'SSLv3' }
 });
   
-  var mailOptions = {
-    from: 'Sender: <***REMOVED***>',
-    to: 'Receiver: <' + sendTo + '>',
-    subject: 'Hello ', 
-    text: 'Hello',
-    attachments: attachFiles
+  var mailOptions = {};
+  if(sendTo.match(/\b@ariento.org/g)){
+    mailOptions = {
+      from: '***REMOVED***',
+      to: sendTo,
+      subject: 'Hello ', 
+      text: 'Hello',
+      attachments: attachFiles
+    } 
+  }
+
+  else{
+    console.log("Error: Recipient Email Is Not Secured");
   }
 
   transporter.sendMail(mailOptions, function(error, response) {
