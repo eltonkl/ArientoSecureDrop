@@ -37,24 +37,25 @@ fs.readdir(upload, function(err, files){
 /* POST send mail */
 router.post('/', function(req, res, next) {
   var sendTo = req.body.to;
-  var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-      user: 'ariento.test.cs130@gmail.com',
-      pass: 'ariento_cs130'
-    }
-  });
+  var transporter = nodemailer.createTransport({ 
+    host: 'smtp.office365.com',
+    port: '587',
+    auth: { user: '***REMOVED***', pass: '***REMOVED***' },
+    secureConnection: false,
+    tls: { ciphers: 'SSLv3' }
+});
   
   var mailOptions = {
-    from: 'Sender: <ariento.test.cs130@gmail.com>',
+    from: 'Sender: <***REMOVED***>',
     to: 'Receiver: <' + sendTo + '>',
-    // to: 'Receiver: <>',
     subject: 'Hello ', 
     text: 'Hello',
     attachments: attachFiles
   }
 
   transporter.sendMail(mailOptions, function(error, response) {
+      if(error)
+        console.log(error);
       console.log("message sent: ", response);
    })
 });
