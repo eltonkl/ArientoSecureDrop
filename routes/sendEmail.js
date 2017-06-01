@@ -18,7 +18,6 @@ var fs = require('fs');
 var path = require('path');
 var upload = path.resolve(__dirname) + "/../public/uploads";
 var attachFiles = [];
-var smime = require('smime');
 
 fs.readdir(upload, function(err, files){
   if(err)
