@@ -24,14 +24,14 @@ fs.readdir(upload, function(err, files){
   if(err)
     console.log("err");
       
-  files.forEach(function(file, index){ 
-    var fileObject =  {
-      filename: file,
-      path: upload + "/" + file,
-      cid: file
-    }
-    attachFiles.push(fileObject);
-  });
+  // files.forEach(function(file, index){ 
+  //   var fileObject =  {
+  //     filename: file,
+  //     path: upload + "/" + file,
+  //     cid: file
+  //   }
+  //   attachFiles.push(fileObject);
+  // });
 });
 
 /* POST send mail */
