@@ -4,15 +4,15 @@ block content
   h1= title
   h2 Welcome to #{title}
   p
-  form(style='background-color: #04eaff;' id='file-uploader' action="/fileUpload" class='dropzone dz-clickable' enctype='multipart/form-data' method="post")
+  form(id='file-uploader' action="/fileUpload" class='dropzone dz-clickable' enctype='multipart/form-data' method="post")
     div(class ='fallback')
       input(name='file' type='file')
 
-  form(action="/sendEmail" method='post')
+  form(action="/sendEmail" method='post' style={margin: '20px 0px 5px 80px'})
     | From:
     input(type="text" name="from" style={margin: '5px 5px'})
     br
     | To:
     input(type="text" name="to" style={margin: '5px 5px'})
     br
-    input(class='button' type="submit" value="Send Email" style='background-color: #14ff1c;' margin: '5px 0px;')
+    input(class='button' type="submit" value="Send Email")
