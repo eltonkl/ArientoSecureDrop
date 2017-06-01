@@ -1,0 +1,237 @@
+body {
+	background-image: url("/stylesheets/img/night.jpg");
+	background-size: cover;
+}
+
+* {
+	color: white;
+	border-radius: 0 !important;
+	font-family: 'Lato', sans-serif;
+	font-size: 18px;
+}
+
+/*** style header ***/
+h1 {
+	font-family: 'Lato', sans-serif;
+	font-weight: bold;
+	text-align: center;
+	letter-spacing: 4px;
+	color: white;
+}
+
+#login-header {
+	margin-bottom: 40px;
+}
+
+/*** style the input fields ***/
+input {
+	font-family: 'Lato', sans-serif;
+	letter-spacing: 1px;
+}
+
+input:focus {
+	color: white;
+}
+
+input.login[type="text"] {
+	background: transparent;
+	border-top: none;
+	border-right: none;
+	border-left: none;
+	border-width: 2px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	height: 100%;
+
+	color: white;
+	font-size: 18px;
+}
+
+input.login[type="text"]::placeholder {
+	color: white;
+	border-color: white;
+	height: 100%;
+}
+
+input.login[type="password"] {
+	background: transparent;
+	border-top: none;
+	border-right: none;
+	border-left: none;
+	border-width: 2px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	margin-top: 25px;
+	height: 100%;
+
+	color: white;
+	font-size: 18px;
+
+}
+
+input.login[type="password"]::placeholder {
+	color: white;
+	border-color: white;
+}
+
+/*** style for create input boxes ***/
+input.input-box[type="text"] {
+	background: transparent;
+	border: 1px solid white;
+	padding: 15px 20px 15px 20px;
+	width: 300px;
+	margin-bottom: 20px;
+	height: 100%;
+
+	color: white;
+	font-size: 18px;
+}
+
+input.input-box[type="text"]::placeholder {
+	color: white;
+	height: 100%;
+}
+
+input.input-box[type="password"] {
+	background: transparent;
+	border: 1px solid white;
+	padding: 10px 20px 10px 20px;
+	width: 300px;
+	margin-bottom: 20px;
+	height: 100%;
+
+	color: white;
+	font-size: 18px;
+}
+
+input.input-box[type="password"]::placeholder {
+	color: white;
+	height: 100%;
+}
+
+
+/*** style and center the submit arrow ***/
+#submit {
+	background: transparent;
+	border: none;
+	margin-top: 25px;
+}
+
+#arrow {
+	width: 50px;
+	height: auto;
+}
+
+
+/*** vertically center login form ***/
+.vertical-center {
+	min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+	min-height: 100vh; /* These two lines are counted as one :-)       */
+
+	display: flex;
+	align-items: center;
+}
+
+/*** style for a box ***/
+.box {
+	background: transparent;
+	border: 2px solid white;
+	padding: 10px 20px 10px 20px;
+	margin: 30px;
+}
+
+a {
+	color: white;
+	text-align: center;
+}
+
+a:hover {
+	border-color: #aaaaaa; /* dim box when hovering */
+	color: #aaaaaa;
+	text-decoration: none;
+}
+
+.stack {
+	margin: auto;
+	width: 300px;
+}
+
+/*** for any clickable "submit" boxes [create, update] **/
+.clickable {
+	background: white;
+	border: 1px solid white;
+	padding: 10px 0px 10px 0px;
+	margin: 20px;
+	width: 300px;
+	margin: auto;
+	text-align: center;
+}
+
+.clickable button {
+	color: black;
+}
+
+#create {
+	background: transparent;
+	border: none;
+}
+
+#edit {
+	background: transparent;
+	border: none;
+}
+
+/*** the list of companies ***/
+.companies {
+	background: transparent;
+	border: none;
+}
+
+/*** company info ***/
+#info li {
+	list-style-type: none;
+}
+
+#edit-btn {
+	background: transparent;
+	border: none;
+}
+
+/*** style for edit input boxes ***/
+input.input-edit[type="text"] {
+	background: transparent;
+	border: none;
+	padding: 15px 20px 15px 20px;
+	width: 300px;
+	height: 100%;
+	margin-bottom: 20px;
+
+	color: white;
+	font-size: 18px;
+}
+
+input.input-edit[type="text"]::placeholder {
+	color: white;
+	height: 100%;
+}
+
+input.input-edit[type="password"] {
+	background: transparent;
+	border: none;
+	padding: 15px 20px 15px 20px;
+	width: 300px;
+	height: 100%;
+	margin-bottom: 20px;
+
+	color: white;
+	font-size: 18px;
+}
+
+input.input-edit[type="password"]::placeholder {
+	color: white;
+	height: 100%;
+}
+
+button:disabled {
+	opacity: 0.3;
+}
