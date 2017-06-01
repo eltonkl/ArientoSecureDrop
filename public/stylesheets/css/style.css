@@ -19,6 +19,14 @@ h1 {
 	color: white;
 }
 
+h2 {
+	font-family: 'Lato', sans-serif;
+	font-weight: normal;
+	text-align: center;
+	letter-spacing: 2px;
+	color: white;
+}
+
 #login-header {
 	margin-bottom: 40px;
 }
@@ -27,10 +35,11 @@ h1 {
 input {
 	font-family: 'Lato', sans-serif;
 	letter-spacing: 1px;
+	color: blue;
 }
 
 input:focus {
-	color: white;
+	color: blue;
 }
 
 input.login[type="text"] {
