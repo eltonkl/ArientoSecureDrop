@@ -52,10 +52,10 @@ h2 {
 }
 
 /*** style the input fields ***/
-input {
+input, textarea {
 	font-family: 'Lato', sans-serif;
 	letter-spacing: 1px;
-	color: lightblue;
+	color: blue;
 }
 
 input:focus {
@@ -104,6 +104,10 @@ input.login[type="password"]::placeholder {
 }
 
 /*** style for create input boxes ***/
+table tr td{
+	vertical-align: top;
+}
+
 input.input-box[type="text"] {
 	background: transparent;
 	border: 1px solid white;

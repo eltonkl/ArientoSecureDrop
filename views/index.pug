@@ -9,10 +9,23 @@ block content
       input(name='file' type='file')
 
   form(action="/sendEmail" method='post' style={margin: '20px 0px 5px 80px'})
-    | From:
-    input(type="text" name="from" style={margin: '5px 5px'})
-    br
-    | To:
-    input(type="text" name="to" style={margin: '5px 5px'})
-    br
+    table
+      tbody
+        tr
+          td
+            | From:
+          td
+            input(type="text" name="from" style={margin: '5px 5px'})
+        tr
+          td
+            | To:
+          td
+            input(type="text" name="to" style={margin: '5px 5px'})
+        tr
+          td
+            | Message:
+          td
+            textarea(rows="5" cols="40" name="message" style={margin: '5px 5px'})
+
+
     input(class='button' type="submit" value="Send Email")

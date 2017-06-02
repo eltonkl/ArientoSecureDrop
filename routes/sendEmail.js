@@ -36,6 +36,7 @@ fs.readdir(upload, function(err, files){
 /* POST send mail */
 router.post('/', function(req, res, next) {
   var sendTo = req.body.to;
+  var message = req.body.message;
 
   var transporter = nodemailer.createTransport({ 
     host: 'smtp.office365.com',
@@ -43,7 +44,7 @@ router.post('/', function(req, res, next) {
     auth: { user: '***REMOVED***', pass: '***REMOVED***' },
     secureConnection: false,
     tls: { ciphers: 'SSLv3' }
-});
+  });
   
   var mailOptions = {};
   if(sendTo.match(/\b@ariento.org/g)){
@@ -51,7 +52,7 @@ router.post('/', function(req, res, next) {
       from: '***REMOVED***',
       to: sendTo,
       subject: 'Hello ', 
-      text: 'Hello',
+      text: message,
       attachments: attachFiles
     } 
   }
