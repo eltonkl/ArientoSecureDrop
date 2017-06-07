@@ -14,10 +14,18 @@ var router = express.Router();
 //var client = ses.createClient({ key: "AKIAI3AKLHSWB2KGQVPQ", secret:"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" });
 
 var nodemailer = require('nodemailer');
+var mysql = require('mysql');
 var fs = require('fs');
 var path = require('path');
 var upload = path.resolve(__dirname) + "/../public/uploads";
 var attachFiles = [];
+
+var connection = mysql.createConnection({
+  host: '***REMOVED***',
+  user: 'ariento',
+  password: '***REMOVED***',
+  database: '***REMOVED***'
+});
 
 fs.readdir(upload, function(err, files){
   if(err)
@@ -47,25 +55,38 @@ router.post('/', function(req, res, next) {
   });
   
   var mailOptions = {};
-  if(sendTo.match(/\b@ariento.org/g)){
-    mailOptions = {
-      from: '***REMOVED***',
-      to: sendTo,
-      subject: 'Hello ', 
-      text: message,
-      attachments: attachFiles
-    } 
-  }
+  var match = /@(.*)/.exec(sendTo)[1];
+  var checkDatabase = 'SELECT company_name FROM company WHERE company_domain=' + connection.escape(match);
 
-  else{
-    console.log("Error: Recipient Email Is Not Secured");
-  }
+  connection.connect();
+  connection.query(checkDatabase, function (error, results, fields) {
+    if (error) throw error;
 
-  transporter.sendMail(mailOptions, function(error, response) {
-      if(error)
-        console.log(error);
-      console.log("message sent: ", response);
-   })
+    if (!results.length){
+      console.log("Error: Recipient Email Is Not Secured");
+      connection.end();
+    }
+
+    else {
+      mailOptions = {
+        from: '***REMOVED***',
+        to: sendTo,
+        subject: results[0].company_name, 
+        text: message,
+        attachments: attachFiles
+      } 
+
+      transporter.sendMail(mailOptions, function(error, response) {
+        if(error)
+          console.log(error);
+        console.log("message sent: ", response);
+        connection.end();
+     })
+
+    }
+
+  });
+  
 });
 
 module.exports = router;
