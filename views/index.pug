@@ -26,6 +26,12 @@ block content
             | Message:
           td
             textarea(rows="5" cols="40" name="message" style={margin: '5px 5px'} )
+    table
+      tbody
+        tr
+          td
+            input(type="checkbox", name="agree" onchange="document.getElementById('button').disabled = !this.checked;")
+          td
+            | I am not a robot
 
-
-    input(class='button' type="submit" value="Send Email")
+    input(class='button' id="button" type="submit" value="Send Email" disabled="true")
