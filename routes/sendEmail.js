@@ -74,8 +74,10 @@ router.post('/', function(req, res, next) {
     }
 
     if (!results.length){
+      console.log("Error: Recipient Email Is Not Secured");
       Log("Error: Recipient Email Is Not Secured");
       res.render('sendEmail', { result: "An error occurred", message: "Your email has not been sent (recipient email is not secured)." });
+      connection.end();
     }
 
     else {
