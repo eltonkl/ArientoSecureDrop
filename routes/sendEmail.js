@@ -29,7 +29,7 @@ var connection = mysql.createConnection({
 
 fs.readdir(upload, function(err, files){
   if(err)
-    console.log("err");
+    console.log("Error reading files to upload");
   
   files.forEach(function(file, index){ 
     var fileObject =  {
@@ -43,6 +43,15 @@ fs.readdir(upload, function(err, files){
 
 /* POST send mail */
 router.post('/', function(req, res, next) {
+  res.setTimeout(0);
+  var date = new Date();
+  var time = date.getMonth().toString() + date.getDate().toString() + date.getFullYear().toString() + "_" + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
+
+  function Log (error) {
+    console.log(error);
+    fs.appendFile(time, error + "\n", (err) => { if (err) console.log ("Error occurred writing to file"); });
+  }
+
   var sendTo = req.body.to;
   var message = req.body.message;
 
@@ -58,13 +67,16 @@ router.post('/', function(req, res, next) {
   var match = /@(.*)/.exec(sendTo)[1];
   var checkDatabase = 'SELECT company_name FROM company WHERE company_domain=' + connection.escape(match);
 
-  connection.connect();
   connection.query(checkDatabase, function (error, results, fields) {
-    if (error) throw error;
+    if (error) {
+      Log("Error reading database");
+      res.render('sendEmail', { result: "An error occurred", message: "Your email has not been sent." });
+    }
 
     if (!results.length){
-      alert("Error: Recipient Email Is Not Secured");
       console.log("Error: Recipient Email Is Not Secured");
+      Log("Error: Recipient Email Is Not Secured");
+      res.render('sendEmail', { result: "An error occurred", message: "Your email has not been sent (recipient email is not secured)." });
       connection.end();
     }
 
@@ -72,16 +84,23 @@ router.post('/', function(req, res, next) {
       mailOptions = {
         from: '***REMOVED***',
         to: sendTo,
-        subject: results[0].company_name, 
+        subject: "You have a secure message from " + req.body.from, 
         text: message,
         attachments: attachFiles
       } 
 
-      transporter.sendMail(mailOptions, function(error, response) {
-        if(error)
-          console.log(error);
-        console.log("message sent: ", response);
-        connection.end();
+      transporter.sendMail(mailOptions, function(error, info) {
+        if(error) {
+          Log(error);
+        }
+
+        Log("Message sent: " + JSON.stringify(info));
+
+        if (error) {
+          res.render('sendEmail', { result: "An error occurred", message: "Your email has not been sent." });
+        } else {
+          res.render('sendEmail', { result: "Success", message: "Your secure email has been sent." });
+        }
      })
 
     }
