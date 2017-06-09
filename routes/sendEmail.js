@@ -1,12 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var date = new Date();
-var time = date.getMonth().toString() + date.getDate().toString() + date.getFullYear().toString() + "_" + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
-
-function Log (error) {
-  console.log(error);
-  fs.appendFile(time, error, (err) => { if (err) console.log ("Error occurred writing to file"); });
-}
 
 //TODO: FIGURE OUT EMAIL SEND!!!
 
@@ -27,16 +20,9 @@ var path = require('path');
 var upload = path.resolve(__dirname) + "/../public/uploads";
 var attachFiles = [];
 
-var connection = mysql.createConnection({
-  host: '***REMOVED***',
-  user: 'ariento',
-  password: '***REMOVED***',
-  database: '***REMOVED***'
-});
-
 fs.readdir(upload, function(err, files){
   if(err)
-    Log("Error reading files to upload");
+    console.log("Error reading files to upload");
   
   files.forEach(function(file, index){ 
     var fileObject =  {
@@ -50,6 +36,14 @@ fs.readdir(upload, function(err, files){
 
 /* POST send mail */
 router.post('/', function(req, res, next) {
+  var date = new Date();
+  var time = date.getMonth().toString() + date.getDate().toString() + date.getFullYear().toString() + "_" + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
+
+  function Log (error) {
+    console.log(error);
+    fs.appendFile(time, error + "\n", (err) => { if (err) console.log ("Error occurred writing to file"); });
+  }
+
   var sendTo = req.body.to;
   var message = req.body.message;
 
@@ -61,6 +55,13 @@ router.post('/', function(req, res, next) {
     tls: { ciphers: 'SSLv3' }
   });
   
+  var connection = mysql.createConnection({
+    host: '***REMOVED***',
+    user: 'ariento',
+    password: '***REMOVED***',
+    database: '***REMOVED***'
+  });
+
   var mailOptions = {};
   var match = /@(.*)/.exec(sendTo)[1];
   var checkDatabase = 'SELECT company_name FROM company WHERE company_domain=' + connection.escape(match);
@@ -69,11 +70,13 @@ router.post('/', function(req, res, next) {
   connection.query(checkDatabase, function (error, results, fields) {
     if (error) {
       Log("Error reading database");
+      res.render('sendEmail', { result: "An error occurred", message: "Your email has not been sent." });
       connection.end();
     }
 
     if (!results.length){
       Log("Error: Recipient Email Is Not Secured");
+      res.render('sendEmail', { result: "An error occurred", message: "Your email has not been sent (recipient email is not secured)." });
       connection.end();
     }
 
@@ -87,12 +90,18 @@ router.post('/', function(req, res, next) {
       } 
 
       transporter.sendMail(mailOptions, function(error, info) {
-        if(error)
+        if(error) {
           Log(error);
+        }
+
         Log("Message sent: " + JSON.stringify(info));
         connection.end();
 
-      res.render('index', { title: 'Ariento Secure Drop' });
+        if (error) {
+          res.render('sendEmail', { result: "An error occurred", message: "Your email has not been sent." });
+        } else {
+          res.render('sendEmail', { result: "Success", message: "Your secure email has been sent." });
+        }
      })
 
     }
