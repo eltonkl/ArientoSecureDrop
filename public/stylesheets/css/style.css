@@ -28,6 +28,17 @@ body {
 	background-color: white;
 }
 
+.button2 {
+	background-color: darkblue;
+	margin-top: 20px;
+        margin: auto;
+        display: block;
+}
+ 
+.button2:active {
+	background-color: white;
+}
+
 /*** style header ***/
 h1 {
 	font-family: 'Lato', sans-serif;
