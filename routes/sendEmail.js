@@ -37,7 +37,7 @@ router.post('/', function(req, res, next) {
 
   function Log (error) {
     console.log(error);
-    fs.appendFile(time, error + "\n", (err) => { if (err) console.log ("Error occurred writing to file"); });
+    fs.appendFile('./log/' + time, error + "\n", (err) => { if (err) console.log ("Error occurred writing to file"); });
   }
 
   fs.readdir(upload, function(err, files){
