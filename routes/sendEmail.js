@@ -20,6 +20,13 @@ var path = require('path');
 var upload = path.resolve(__dirname) + "/../public/uploads";
 var attachFiles = [];
 
+var connection = mysql.createConnection({
+  host: '***REMOVED***',
+  user: 'ariento',
+  password: '***REMOVED***',
+  database: '***REMOVED***'
+});
+
 fs.readdir(upload, function(err, files){
   if(err)
     console.log("Error reading files to upload");
@@ -36,6 +43,7 @@ fs.readdir(upload, function(err, files){
 
 /* POST send mail */
 router.post('/', function(req, res, next) {
+  res.setTimeout(0);
   var date = new Date();
   var time = date.getMonth().toString() + date.getDate().toString() + date.getFullYear().toString() + "_" + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
 
@@ -55,29 +63,19 @@ router.post('/', function(req, res, next) {
     tls: { ciphers: 'SSLv3' }
   });
   
-  var connection = mysql.createConnection({
-    host: '***REMOVED***',
-    user: 'ariento',
-    password: '***REMOVED***',
-    database: '***REMOVED***'
-  });
-
   var mailOptions = {};
   var match = /@(.*)/.exec(sendTo)[1];
   var checkDatabase = 'SELECT company_name FROM company WHERE company_domain=' + connection.escape(match);
 
-  connection.connect();
   connection.query(checkDatabase, function (error, results, fields) {
     if (error) {
       Log("Error reading database");
       res.render('sendEmail', { result: "An error occurred", message: "Your email has not been sent." });
-      connection.end();
     }
 
     if (!results.length){
       Log("Error: Recipient Email Is Not Secured");
       res.render('sendEmail', { result: "An error occurred", message: "Your email has not been sent (recipient email is not secured)." });
-      connection.end();
     }
 
     else {
@@ -95,7 +93,6 @@ router.post('/', function(req, res, next) {
         }
 
         Log("Message sent: " + JSON.stringify(info));
-        connection.end();
 
         if (error) {
           res.render('sendEmail', { result: "An error occurred", message: "Your email has not been sent." });
