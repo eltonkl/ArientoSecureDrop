@@ -31,15 +31,6 @@ var connection = mysql.createConnection({
 
 /* POST send mail */
 router.post('/', function(req, res, next) {
-  var filesUploaded = fs.readdirSync(upload);
-  if(filesUploaded.length > 0) {
-    for(var i = 0; i < filesUploaded.length; i++) {
-      var filePath = upload + '/' + filesUploaded[i];
-      if(fs.statSync(filePath).isFile())
-        fs.unlinkSync(filePath)
-    }
-  }
-
   res.setTimeout(0);
   var date = new Date();
   var time = date.getMonth().toString() + date.getDate().toString() + date.getFullYear().toString() + "_" + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
@@ -85,12 +76,20 @@ router.post('/', function(req, res, next) {
     if (error) {
       Log("Error reading database");
       res.render('sendEmail', { result: "An error occurred", message: "Your email has not been sent." });
+      for(var i = 0; i < trackFiles.length; i++)
+        fs.unlink(trackFiles[i]);
+      attachFiles = [];
+      trackFiles = [];
     }
 
     if (!results.length){
       console.log("Error: Recipient Email Is Not Secured");
       Log("Error: Recipient Email Is Not Secured");
       res.render('sendEmail', { result: "An error occurred", message: "Your email has not been sent (recipient email is not secured)." });
+      for(var i = 0; i < trackFiles.length; i++)
+        fs.unlink(trackFiles[i]);
+      attachFiles = [];
+      trackFiles = [];
       connection.end();
     }
 
@@ -106,6 +105,10 @@ router.post('/', function(req, res, next) {
       transporter.sendMail(mailOptions, function(error, info) {
         if(error) {
           Log(error);
+          for(var i = 0; i < trackFiles.length; i++)
+            fs.unlink(trackFiles[i]);
+          attachFiles = [];
+          trackFiles = [];
         }
 
         Log("Message sent: " + JSON.stringify(info));
@@ -115,6 +118,11 @@ router.post('/', function(req, res, next) {
         } else {
           res.render('sendEmail', { result: "Success", message: "Your secure email has been sent." });
         }
+
+        for(var i = 0; i < trackFiles.length; i++)
+            fs.unlink(trackFiles[i]);
+        attachFiles = [];
+        trackFiles = [];
      })
 
     }
