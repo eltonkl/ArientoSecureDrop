@@ -27,20 +27,6 @@ var connection = mysql.createConnection({
   database: '***REMOVED***'
 });
 
-fs.readdir(upload, function(err, files){
-  if(err)
-    console.log("Error reading files to upload");
-  
-  files.forEach(function(file, index){ 
-    var fileObject =  {
-      filename: file,
-      path: upload + "/" + file,
-      cid: file
-    }
-    attachFiles.push(fileObject);
-  });
-});
-
 /* POST send mail */
 router.post('/', function(req, res, next) {
   res.setTimeout(0);
@@ -51,6 +37,20 @@ router.post('/', function(req, res, next) {
     console.log(error);
     fs.appendFile(time, error + "\n", (err) => { if (err) console.log ("Error occurred writing to file"); });
   }
+
+  fs.readdir(upload, function(err, files){
+  if(err)
+    Log("Error reading files to upload");
+
+  files.forEach(function(file, index){
+    var fileObject =  {
+      filename: file,
+      path: upload + "/" + file,
+      cid: file
+    }
+    attachFiles.push(fileObject);
+  });
+});
 
   var sendTo = req.body.to;
   var message = req.body.message;
