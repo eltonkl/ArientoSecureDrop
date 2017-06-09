@@ -4,7 +4,7 @@
 //For now can only support upload of 3 files
 Dropzone.options.fileUploader = {
   paramName: 'file',
-  maxFilesize: 100, // MB
+  maxFilesize: 500, // MB
   maxFiles: 10,
   dictDefaultMessage: 'Drag an image here to upload, or click to select one',
   headers: {

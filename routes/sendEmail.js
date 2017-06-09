@@ -16,9 +16,11 @@ var router = express.Router();
 var nodemailer = require('nodemailer');
 var mysql = require('mysql');
 var fs = require('fs');
+var crypto = require('crypto');
 var path = require('path');
 var upload = path.resolve(__dirname) + "/../public/uploads";
 var attachFiles = [];
+var trackFiles = [];
 
 var connection = mysql.createConnection({
   host: '***REMOVED***',
@@ -43,10 +45,13 @@ router.post('/', function(req, res, next) {
     Log("Error reading files to upload");
 
   files.forEach(function(file, index){
+    var filePath = upload + "/" + file;
+    trackFiles.push(filePath);
+    var encryptedFile = crypto.randomBytes(20).toString('hex') + "@possible";
     var fileObject =  {
       filename: file,
-      path: upload + "/" + file,
-      cid: file
+      path: filePath,
+      cid: encryptedFile
     }
     attachFiles.push(fileObject);
   });
@@ -71,12 +76,16 @@ router.post('/', function(req, res, next) {
     if (error) {
       Log("Error reading database");
       res.render('sendEmail', { result: "An error occurred", message: "Your email has not been sent." });
+      for(var i = 0; i < trackFiles.length; i++)
+        fs.unlink(trackFiles[i]);
     }
 
     if (!results.length){
       console.log("Error: Recipient Email Is Not Secured");
       Log("Error: Recipient Email Is Not Secured");
       res.render('sendEmail', { result: "An error occurred", message: "Your email has not been sent (recipient email is not secured)." });
+      for(var i = 0; i < trackFiles.length; i++)
+        fs.unlink(trackFiles[i]);
       connection.end();
     }
 
@@ -92,6 +101,8 @@ router.post('/', function(req, res, next) {
       transporter.sendMail(mailOptions, function(error, info) {
         if(error) {
           Log(error);
+          for(var i = 0; i < trackFiles.length; i++)
+            fs.unlink(trackFiles[i]);
         }
 
         Log("Message sent: " + JSON.stringify(info));
@@ -101,6 +112,9 @@ router.post('/', function(req, res, next) {
         } else {
           res.render('sendEmail', { result: "Success", message: "Your secure email has been sent." });
         }
+
+        for(var i = 0; i < trackFiles.length; i++)
+            fs.unlink(trackFiles[i]);
      })
 
     }
