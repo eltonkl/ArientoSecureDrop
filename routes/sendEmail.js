@@ -1,5 +1,12 @@
 var express = require('express');
 var router = express.Router();
+var date = new Date();
+var time = date.getMonth().toString() + date.getDate().toString() + date.getFullYear().toString() + "_" + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
+
+function Log (error) {
+  console.log(error);
+  fs.appendFile(time, error, (err) => { if (err) console.log ("Error occurred writing to file"); });
+}
 
 //TODO: FIGURE OUT EMAIL SEND!!!
 
@@ -29,7 +36,7 @@ var connection = mysql.createConnection({
 
 fs.readdir(upload, function(err, files){
   if(err)
-    console.log("err");
+    Log("Error reading files to upload");
   
   files.forEach(function(file, index){ 
     var fileObject =  {
@@ -60,10 +67,13 @@ router.post('/', function(req, res, next) {
 
   connection.connect();
   connection.query(checkDatabase, function (error, results, fields) {
-    if (error) throw error;
+    if (error) {
+      Log("Error reading database");
+      connection.end();
+    }
 
     if (!results.length){
-      console.log("Error: Recipient Email Is Not Secured");
+      Log("Error: Recipient Email Is Not Secured");
       connection.end();
     }
 
@@ -71,16 +81,18 @@ router.post('/', function(req, res, next) {
       mailOptions = {
         from: '***REMOVED***',
         to: sendTo,
-        subject: results[0].company_name, 
+        subject: "You have a secure message from " + req.body.from, 
         text: message,
         attachments: attachFiles
       } 
 
-      transporter.sendMail(mailOptions, function(error, response) {
+      transporter.sendMail(mailOptions, function(error, info) {
         if(error)
-          console.log(error);
-        console.log("message sent: ", response);
+          Log(error);
+        Log("Message sent: " + JSON.stringify(info));
         connection.end();
+
+      res.render('index', { title: 'Ariento Secure Drop' });
      })
 
     }
