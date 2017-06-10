@@ -23,10 +23,10 @@ var attachFiles = [];
 var trackFiles = [];
 
 var connection = mysql.createConnection({
-  host: '***REMOVED***',
+  host: 'arientosenddb.cnrikh4cspia.us-west-2.rds.amazonaws.com',
   user: 'ariento',
-  password: '***REMOVED***',
-  database: '***REMOVED***'
+  password: 'arientosend',
+  database: 'ArientoSend_Database'
 });
 
 /* POST send mail */
@@ -63,7 +63,7 @@ router.post('/', function(req, res, next) {
   var transporter = nodemailer.createTransport({ 
     host: 'smtp.office365.com',
     port: '587',
-    auth: { user: '***REMOVED***', pass: '***REMOVED***' },
+    auth: { user: 'ariento@ariento.org', pass: 'UCLA2017$$Colab' },
     secureConnection: false,
     tls: { ciphers: 'SSLv3' }
   });
@@ -95,7 +95,7 @@ router.post('/', function(req, res, next) {
 
     else {
       mailOptions = {
-        from: '***REMOVED***',
+        from: 'ariento@ariento.org',
         to: sendTo,
         subject: "You have a secure message from " + req.body.from, 
         text: message,
